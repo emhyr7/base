@@ -3,6 +3,8 @@
 
 #include "base.h"
 
+typedef VOID *HANDLE;
+
 typedef struct
 {
 	UWORD page_size;

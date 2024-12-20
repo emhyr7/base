@@ -1,6 +1,9 @@
 #if !defined(__INCLUDED_BASE_H__)
 #define __INCLUDED_BASE_H__
 
+#include <assert.h>
+#include <stdarg.h>
+
 #if defined(__cplusplus)
 	#define __LANGUAGE_CPP__
 #else
@@ -56,6 +59,7 @@
 	#define _STDCALL_  __stdcall
 	#define _FASTCALL_ __fastcall
 	#define _INLINE_   static  __forceinline
+	#define _NORETURN_ __declspec(noreturn) void
 #else
 	#define _EXPORTED_ _DEMANGLED_ __dllexport__
 	#define _IMPORTED_ _DEMANGLED_ __dllimport__
@@ -63,6 +67,7 @@
 	#define _STDCALL_  __stdcall__
 	#define _FASTCALL_ __fastcall__
 	#define _INLINE_   static __always_inline__
+	#define _NORETURN_ __noreturn__ void
 #endif
 
 // keywords
@@ -140,6 +145,11 @@
 
 	typedef char      CHAR;
 	typedef __wchar_t WCHAR;
+
+	typedef va_list VARGS;
+	#define begin_vargs(vargs, arg) va_start(vargs, arg)
+	#define get_varg(type, vargs)   va_arg(vargs, type)
+	#define end_vargs(vargs)        va_end(vargs)
 #endif
 
 #define _WIDEN_TEXT__(s) L ## s
@@ -149,15 +159,6 @@
 	#define _BREAK_() __debugbreak()
 #else
 	#define _BREAK_() __builtin_debugtrap()
-#endif
-
-#if defined(__COMPILER_MSVC__)
-	//_IMPORTED_ VOID _CDECL_ _wassert(const WCHAR *, const WCHAR *, UWORD);
-
-	//#define assert(e) (VOID)(!!(e) || (_wassert((const WCHAR *)_WIDEN_TEXT_(#e), (const WCHAR *)_WIDEN_TEXT_(__FILE__), (UWORD)(__LINE__)), 0))
-	#define assert(e) (VOID)(!!(e) || (_BREAK_(), 0))
-#else
-	#define assert(e) (VOID)(!!(e) || (_BREAK_(), 0))
 #endif
 
 #endif
