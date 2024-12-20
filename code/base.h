@@ -1,7 +1,6 @@
 #if !defined(__INCLUDED_BASE_H__)
 #define __INCLUDED_BASE_H__
 
-// language
 #if defined(__cplusplus)
 	#define __LANGUAGE_CPP__
 #else
@@ -10,7 +9,6 @@
 
 // platform
 
-// platform/compiler
 #if defined(__clang__)
 	#define __COMPILER_CLANG__
 #endif
@@ -21,14 +19,12 @@
 	#define __COMPILER_GNUC__
 #endif
 
-// platform/architecture
 #if defined(__amd64__)
 	#define __ARCHITECTURE_AMD64__
 #else
 	#error unknown architecture
 #endif
 
-// platform/endianness
 #if defined(__BIG_ENDIAN__)
 	#define __ENDIANNESS_BIG__
 #elif defined(__LITTLE_ENDIAN__)
@@ -37,7 +33,6 @@
 	#error unknown endianness
 #endif
 
-// platform/os
 #if defined(_WIN64)
 	#define __OS_WINDOWS__
 #elif defined(__linux__)

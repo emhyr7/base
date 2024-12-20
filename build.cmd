@@ -9,4 +9,4 @@ cd build
 set CFLAGS=-O0 -g -Wall -Wextra
 
 clang %CFLAGS% -c ..\code\*.c || exit /b 1
-lib /out:base.lib *.o || exit /b 1
+lib /nologo /out:base.lib *.o || exit /b 1

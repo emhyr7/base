@@ -8,19 +8,24 @@
 #define MEBIBYTES(n) (KIBIBYTES(n) << 10)
 #define GIBIBYTES(n) (MEBIBYTES(n) << 10)
 
-#define copy(a, b, n) __builtin_memcpy(a, b, n)
-#define move(a, b, n) __builtin_memmove(a, b, n) 
-#define test(a, b, n) __builtin_memcmp(a, b, n)
-#define fill(a, b, n) __builtin_memset(a, b, n)
-#define find(a, b, n) __builtin_memchr(a, b, n)
+_IMPORTED_ VOID *_CDECL_ memcpy (VOID *, const VOID *, SIZE);
+_IMPORTED_ VOID *_CDECL_ memmove(VOID *, const VOID *, SIZE);
+_IMPORTED_ WORD  _CDECL_ memcmp (const VOID *, const VOID *, SIZE);
+_IMPORTED_ VOID *_CDECL_ memset (VOID *, WORD, SIZE);
+_IMPORTED_ VOID *_CDECL_ memchr (const VOID *, WORD, SIZE);
 
-#define align_forwards(address, alignment)  __builtin_align_up(address, alignment)
-#define align_backwards(address, alignment) __builtin_align_down(address, alignment)
-#define is_aligned(address, alignment)      __builtin_is_aligned(address, alignment)
-#define is_alignment(alignment)             ((alignment) % 2 == 0)
+#define copy(a, b, n) memcpy (a, b, n)
+#define move(a, b, n) memmove(a, b, n) 
+#define test(a, b, n) memcmp (a, b, n)
+#define fill(a, b, n) memset (a, b, n)
+#define find(a, b, n) memchr (a, b, n)
 
-#define backward_alignment_of(address, alignment) ((address) - align_backwards(address, alignment))
-#define forward_alignment_of(address, alignment)  (align_forwards(address, alignment) - (address))
+inline BIT     is_alignment         (SIZE alignment)                  { return alignment % 2 == 0; }
+inline SIZE    backward_alignment_of(UINTPTR address, SIZE alignment) { assert(is_alignment(alignment)); return alignment ? address & (alignment - 1) : 0; }
+inline SIZE    forward_alignment_of (UINTPTR address, SIZE alignment) { SIZE remainder = backward_alignment_of(address, alignment); return remainder ? alignment - remainder : 0; }
+inline UINTPTR align_forwards       (UINTPTR address, SIZE alignment) { return address + forward_alignment_of(address, alignment); }
+inline UINTPTR align_backwards      (UINTPTR address, SIZE alignment) { return address - backward_alignment_of(address, alignment); }
+inline BIT     is_aligned           (UINTPTR address, SIZE alignment) { return !backward_alignment_of(address, alignment); }
 
 typedef struct
 {
