@@ -20,12 +20,12 @@ _IMPORTED_ VOID *_CDECL_ memchr (const VOID *, WORD, SIZE);
 #define fill(a, b, n) memset (a, b, n)
 #define find(a, b, n) memchr (a, b, n)
 
-inline BIT     is_alignment         (SIZE alignment)                  { return alignment % 2 == 0; }
-inline SIZE    backward_alignment_of(UINTPTR address, SIZE alignment) { assert(is_alignment(alignment)); return alignment ? address & (alignment - 1) : 0; }
-inline SIZE    forward_alignment_of (UINTPTR address, SIZE alignment) { SIZE remainder = backward_alignment_of(address, alignment); return remainder ? alignment - remainder : 0; }
-inline UINTPTR align_forwards       (UINTPTR address, SIZE alignment) { return address + forward_alignment_of(address, alignment); }
-inline UINTPTR align_backwards      (UINTPTR address, SIZE alignment) { return address - backward_alignment_of(address, alignment); }
-inline BIT     is_aligned           (UINTPTR address, SIZE alignment) { return !backward_alignment_of(address, alignment); }
+_INLINE_ BIT     is_alignment         (SIZE alignment)                  { return alignment % 2 == 0; }
+_INLINE_ SIZE    backward_alignment_of(UINTPTR address, SIZE alignment) { assert(is_alignment(alignment)); return alignment ? address & (alignment - 1) : 0; }
+_INLINE_ SIZE    forward_alignment_of (UINTPTR address, SIZE alignment) { SIZE remainder = backward_alignment_of(address, alignment); return remainder ? alignment - remainder : 0; }
+_INLINE_ UINTPTR align_forwards       (UINTPTR address, SIZE alignment) { return address + forward_alignment_of(address, alignment); }
+_INLINE_ UINTPTR align_backwards      (UINTPTR address, SIZE alignment) { return address - backward_alignment_of(address, alignment); }
+_INLINE_ BIT     is_aligned           (UINTPTR address, SIZE alignment) { return !backward_alignment_of(address, alignment); }
 
 typedef struct
 {
@@ -53,9 +53,9 @@ typedef struct
 
 extern HEAP_INTERFACE *global_heap_interface;
 
-inline VOID *allocate  (UWORD size)              { return global_heap_interface->allocate(size, global_heap_interface->state); }
-inline VOID *reallocate(UWORD size, VOID *block) { return global_heap_interface->reallocate(size, block , global_heap_interface->state); }
-inline VOID  deallocate(VOID *block)             { global_heap_interface->deallocate(block, global_heap_interface->state); }
+_INLINE_ VOID *allocate  (UWORD size)              { return global_heap_interface->allocate(size, global_heap_interface->state); }
+_INLINE_ VOID *reallocate(UWORD size, VOID *block) { return global_heap_interface->reallocate(size, block , global_heap_interface->state); }
+_INLINE_ VOID  deallocate(VOID *block)             { global_heap_interface->deallocate(block, global_heap_interface->state); }
 
 typedef VOID *PUSH(UWORD size, UWORD alignment, VOID *state);
 typedef VOID  POP (UWORD size, UWORD alignment, VOID *state);
@@ -69,8 +69,8 @@ typedef struct
 
 extern STACK_INTERFACE *global_stack_interface;
 
-inline VOID *push(UWORD size, UWORD alignment) { return global_stack_interface->push(size, alignment, global_stack_interface->state); }
-inline VOID  pop (UWORD size, UWORD alignment) { global_stack_interface->pop(size, alignment, global_stack_interface->state); }
+_INLINE_ VOID *push(UWORD size, UWORD alignment) { return global_stack_interface->push(size, alignment, global_stack_interface->state); }
+_INLINE_ VOID  pop (UWORD size, UWORD alignment) { global_stack_interface->pop(size, alignment, global_stack_interface->state); }
 
 // buffer
 

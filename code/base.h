@@ -55,12 +55,14 @@
 	#define _CDECL_    __cdecl
 	#define _STDCALL_  __stdcall
 	#define _FASTCALL_ __fastcall
+	#define _INLINE_   static  __forceinline
 #else
 	#define _EXPORTED_ _DEMANGLED_ __dllexport__
 	#define _IMPORTED_ _DEMANGLED_ __dllimport__
 	#define _CDECL_    __cdecl__
 	#define _STDCALL_  __stdcall__
 	#define _FASTCALL_ __fastcall__
+	#define _INLINE_   static __always_inline__
 #endif
 
 // keywords
